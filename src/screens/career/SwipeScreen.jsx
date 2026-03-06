@@ -232,8 +232,8 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
                         boxShadow: swipeDir === "apply"
                             ? `0 0 60px rgba(34,197,94,${Math.min(drag / 200, 0.6)})`
                             : swipeDir === "skip"
-                            ? `0 0 60px rgba(239,68,68,${Math.min(-drag / 200, 0.6)})`
-                            : "0 20px 60px rgba(0,0,0,0.6)",
+                                ? `0 0 60px rgba(239,68,68,${Math.min(-drag / 200, 0.6)})`
+                                : "0 20px 60px rgba(0,0,0,0.6)",
                     }}
                 >
                     {/* Swipe color overlays */}
