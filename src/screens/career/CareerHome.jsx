@@ -5,6 +5,7 @@ import { Row, Col } from '../../helpers.jsx';
 import ModeToggle from '../../components/ModeToggle.jsx';
 import SwipeScreen from './SwipeScreen.jsx';
 
+<<<<<<< HEAD
 /* ══════════════════════════════════════════════════════════════════
    CAREER HOME  v2  — Engagement-first layout
    Layer 1 (Immediate Action):  Header → Metrics → Quick Apply
@@ -13,6 +14,10 @@ import SwipeScreen from './SwipeScreen.jsx';
                                   → Community Feed → News
 ══════════════════════════════════════════════════════════════════ */
 const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
+=======
+/* ── CAREER HOME — V2.1 (Placement Readiness + Next Actions) ── */
+const CareerHome = ({ mode, onToggle, appliedCount = 0, addXP }) => {
+>>>>>>> bb55fe49f86d8367fc555f13e0204ca4a5ca288d
     const t = T.c;
     const [showSwipe, setShowSwipe] = useState(false);
     const [challengeDone, setChallengeDone] = useState(false);
@@ -26,6 +31,7 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
     if (showSwipe) return <SwipeScreen onClose={() => setShowSwipe(false)} />;
 
     return (
+<<<<<<< HEAD
         <Col g={0} sx={{ paddingBottom: 32 }}>
 
             {/* ══════════════════════════════════════════════════
@@ -42,6 +48,25 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                         <Row ai="center" g={6} sx={{ marginTop: 4 }}>
                             <div style={{ width: 8, height: 8, borderRadius: 4, background: t.green, boxShadow: `0 0 8px ${t.green}88` }} />
                             <span style={{ fontFamily: FB, fontSize: 11, color: t.t2 }}>Skill Score <span style={{ color: t.orange, fontWeight: 700 }}>847</span> · Rank <span style={{ color: "#F59E0B", fontWeight: 700 }}>#3 RGPV</span></span>
+=======
+        <>
+            <Col g={0}>
+                {/* Header */}
+                <div style={{ padding: "10px 22px 16px" }}>
+                    <Row ai="flex-start" jc="space-between">
+                        <Col g={2}>
+                            <span style={{ fontFamily: FB, fontSize: 12, color: t.t2, fontWeight: 500 }}>Good morning</span>
+                            <span style={{ fontFamily: FD, fontSize: 26, fontWeight: 800, color: t.t1, letterSpacing: -0.8, lineHeight: 1.1 }}>Rahul Sharma</span>
+                        </Col>
+                        <Row g={10} ai="center" sx={{ marginTop: 4 }}>
+                            <ModeToggle mode={mode} onToggle={onToggle} />
+                            <div style={{ position: "relative" }}>
+                                <div style={{ width: 38, height: 38, borderRadius: 14, background: t.s2, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Svg d={IC.bell} s={17} c={t.t2} />
+                                </div>
+                                <div style={{ position: "absolute", top: 8, right: 9, width: 7, height: 7, borderRadius: 4, background: t.orange, border: `1.5px solid ${t.bg}` }} />
+                            </div>
+>>>>>>> bb55fe49f86d8367fc555f13e0204ca4a5ca288d
                         </Row>
                     </Col>
                     <Row g={10} ai="center" sx={{ marginTop: 2 }}>
@@ -56,6 +81,7 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                 </Row>
             </div>
 
+<<<<<<< HEAD
             {/* ══════════════════════════════════════════════════
                 §2  SKILL SCORE + RANK STATS STRIP
                 4-column quick stats immediately below the name.
@@ -237,6 +263,102 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                         </Col>
                         <div style={{ width: 38, height: 38, borderRadius: 14, background: t.orangeLo, border: `1px solid ${t.orange}44`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <Svg d={IC.user} s={18} c={t.orange} />
+=======
+                {/* ── Placement Readiness Hero (V2.1) ── */}
+                <div style={{ margin: "0 22px 20px", borderRadius: 24, background: t.s1, position: "relative", overflow: "hidden", padding: "22px 20px", boxShadow: t.shadow }}>
+                    <div style={{ position: "absolute", top: -40, right: -40, width: 200, height: 200, borderRadius: "50%", background: t.orangeLo, filter: "blur(60px)" }} />
+                    <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: t.orangeLo, filter: "blur(40px)" }} />
+                    <img src="/assets/images/career_hero.png" alt="Placement Readiness" style={{ position: 'absolute', right: -20, bottom: -10, width: 140, objectFit: 'contain', mixBlendMode: 'multiply', opacity: 0.8 }} />
+                    <span style={{ fontFamily: FB, fontSize: 10, fontWeight: 700, color: t.orange, letterSpacing: 2, position: "relative", zIndex: 1, display: "block", marginBottom: 8, textTransform: "uppercase" }}>PLACEMENT READY</span>
+                    <span style={{ fontFamily: FD, fontSize: 52, fontWeight: 900, color: t.t1, position: "relative", zIndex: 1, display: "block", lineHeight: 1, marginBottom: 8 }}>47<span style={{ fontSize: 28, fontWeight: 500, color: t.t2 }}>%</span></span>
+                    <div style={{ position: "relative", zIndex: 1, height: 6, background: t.s2, borderRadius: 3, overflow: "hidden", marginBottom: 10 }}>
+                        <div style={{ width: "47%", height: "100%", background: `linear-gradient(90deg, ${t.orange}, #FFB36B)`, borderRadius: 3 }} />
+                    </div>
+                    <span style={{ fontFamily: FB, fontSize: 12, color: t.t2, position: "relative", zIndex: 1, display: "block", marginBottom: 14 }}>3 actions to move forward this week</span>
+                    <button style={{ height: 38, borderRadius: 100, padding: "0 20px", background: t.orange, border: "none", color: "#fff", fontFamily: FB, fontSize: 13, fontWeight: 700, cursor: "pointer", position: "relative", zIndex: 1, boxShadow: `0 4px 16px ${t.orange}40` }}>
+                        View Roadmap →
+                    </button>
+                </div>
+
+                {/* ── Next 3 Actions Row (V2.1) ── */}
+                <div style={{ padding: "0 22px 20px", overflowX: "auto" }}>
+                    <span style={{ fontFamily: FB, fontSize: 12, fontWeight: 700, color: t.t2, letterSpacing: 1, display: "block", marginBottom: 10 }}>NEXT ACTIONS</span>
+                    <Row g={10}>
+                        {[
+                            { icon: IC.check, label: "Verify React", xp: 40 },
+                            { icon: IC.brief, label: "Apply to 3 jobs", xp: 75 },
+                            { icon: IC.img, label: "Add 1 project", xp: 30 },
+                        ].map((a, i) => (
+                            <div key={i} style={{ flex: 1, background: t.s1, borderRadius: 16, padding: "14px 12px", border: "none", boxShadow: t.shadow, minWidth: 100 }}>
+                                <div style={{ width: 32, height: 32, borderRadius: 10, background: t.orangeLo, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 8 }}>
+                                    <Svg d={a.icon} s={16} c={t.orange} w={1.8} />
+                                </div>
+                                <span style={{ fontFamily: FB, fontWeight: 600, fontSize: 12, color: t.t1, display: "block", marginBottom: 4 }}>{a.label}</span>
+                                <span style={{ fontFamily: FB, fontSize: 11, fontWeight: 700, color: t.orange }}>+{a.xp} XP</span>
+                            </div>
+                        ))}
+                    </Row>
+                </div>
+
+                {/* ── 4-stat row (V2.1 — added Recruiter Views) ── */}
+                <Row g={8} sx={{ padding: "0 22px 20px" }}>
+                    {[[String(appliedCount), "Applied", t.orange], ["3", "Shortlisted", T.c.green], ["48", "Views", T.c.blue], ["3", "Recruiter\nViews", "#9333EA"]].map(([n, l, col]) => (
+                        <div key={l} style={{ flex: 1, background: t.s1, borderRadius: 16, padding: "14px 8px", border: "none", boxShadow: t.shadow, textAlign: "center" }}>
+                            <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 22, color: col, display: "block", lineHeight: 1 }}>{n}</span>
+                            <span style={{ fontFamily: FB, fontSize: 9, color: t.t2, marginTop: 3, display: "block", whiteSpace: "pre-line" }}>{l}</span>
+                        </div>
+                    ))}
+                </Row>
+
+                {/* Section label */}
+                <Row ai="center" jc="space-between" sx={{ padding: "0 22px 12px" }}>
+                    <span style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, color: t.t1 }}>Matched for you</span>
+                    <span style={{ fontFamily: FB, fontSize: 12, color: t.orange, fontWeight: 600 }}>See all →</span>
+                </Row>
+
+                {/* Quick Apply CTA */}
+                <div onClick={() => setShowSwipe(true)} style={{
+                    margin: "0 22px 20px", borderRadius: 24,
+                    background: t.s1,
+                    border: "none",
+                    padding: "18px 20px", cursor: "pointer", position: "relative", overflow: "hidden",
+                    boxShadow: t.shadow,
+                }}>
+                    <div style={{ position: "absolute", top: -30, right: -30, width: 150, height: 150, borderRadius: "50%", background: t.orangeLo, filter: "blur(50px)", pointerEvents: "none" }} />
+                    <div style={{ position: "absolute", bottom: -20, left: -20, width: 100, height: 100, borderRadius: "50%", background: t.orangeLo, filter: "blur(40px)", pointerEvents: "none" }} />
+
+                    <Row ai="center" jc="space-between" sx={{ position: "relative", zIndex: 1 }}>
+                        <Col g={6}>
+                            <Row g={8} ai="center" sx={{ marginBottom: 4 }}>
+                                <div style={{ display: "flex", gap: 3 }}>
+                                    {[0, 1, 2].map(i => (
+                                        <div key={i} style={{ width: i === 1 ? 24 : 16, height: 5, borderRadius: 3, background: i === 0 ? "rgba(239,68,68,0.7)" : i === 1 ? t.orange : "rgba(34,197,94,0.7)" }} />
+                                    ))}
+                                </div>
+                                <span style={{ fontFamily: FB, fontSize: 10, fontWeight: 700, color: t.orange, letterSpacing: 1.2 }}>QUICK APPLY</span>
+                            </Row>
+                            <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 20, color: t.t1, lineHeight: 1.2 }}>
+                                5 jobs waiting<br />for your decision
+                            </span>
+                            <span style={{ fontFamily: FB, fontSize: 12, color: t.t2, marginTop: 2 }}>
+                                Swipe right to apply · left to skip
+                            </span>
+                        </Col>
+                        <div style={{ position: "relative", width: 64, height: 80, flexShrink: 0 }}>
+                            {[2, 1, 0].map(i => (
+                                <div key={i} style={{
+                                    position: "absolute", width: 52, height: 70,
+                                    background: t.s2,
+                                    border: `1px solid ${t.border}`,
+                                    borderRadius: 14,
+                                    top: i * 5, left: i * 4,
+                                    transform: `rotate(${i === 1 ? 6 : i === 2 ? 12 : 0}deg)`,
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                }}>
+                                    {i === 0 && <Svg d={IC.swipe} s={20} c={t.orange} />}
+                                </div>
+                            ))}
+>>>>>>> bb55fe49f86d8367fc555f13e0204ca4a5ca288d
                         </div>
                     </Row>
                     <div style={{ height: 6, background: t.s4, borderRadius: 3, overflow: "hidden", marginBottom: 14 }}>
@@ -258,6 +380,7 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                 </div>
             </div>
 
+<<<<<<< HEAD
             {/* ══════════════════════════════════════════════════
                 §6  RECRUITER ACTIVITY SIGNAL
                 FOMO/curiosity drop. "Recruiters are looking"
@@ -291,6 +414,15 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                             <Row key={i} ai="center" g={12}>
                                 <div style={{ width: 36, height: 36, borderRadius: 12, background: s.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                                     <Svg d={s.icon} s={16} c={s.col} />
+=======
+                {/* Horizontal job cards */}
+                <div style={{ display: "flex", gap: 12, padding: "0 22px 20px", overflowX: "auto" }}>
+                    {jobs.map((j, i) => (
+                        <div key={i} style={{ background: t.s1, borderRadius: 24, padding: 16, minWidth: 188, border: "none", boxShadow: t.shadow, flexShrink: 0 }}>
+                            <Row g={10} ai="center" sx={{ marginBottom: 12 }}>
+                                <div style={{ width: 44, height: 44, borderRadius: 14, background: t.s2, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                                    <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 18, color: t.orange }}>{j.ch}</span>
+>>>>>>> bb55fe49f86d8367fc555f13e0204ca4a5ca288d
                                 </div>
                                 <Col g={2} sx={{ flex: 1 }}>
                                     <span style={{ fontFamily: FB, fontSize: 12, fontWeight: 600, color: t.t1 }}>{s.label}</span>
@@ -302,6 +434,7 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                 </div>
             </div>
 
+<<<<<<< HEAD
             {/* ══════════════════════════════════════════════════
                 §7  HORIZONTAL JOB CARDS
                 Scrollable browse strip for users who want to
@@ -391,6 +524,12 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                 <Row ai="center" g={8}>
                     <span style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, color: t.t1 }}>Career Activity</span>
                     <span style={{ fontSize: 15 }}>🔥</span>
+=======
+                {/* News strip */}
+                <Row ai="center" jc="space-between" sx={{ padding: "0 22px 10px" }}>
+                    <Row g={6} ai="center"><Svg d={IC.zap} s={16} c={t.orange} fill={t.orange} w={0} /><span style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, color: t.t1 }}>Tech Pulse</span></Row>
+                    <span style={{ fontFamily: FB, fontSize: 12, color: t.orange, fontWeight: 600 }}>More →</span>
+>>>>>>> bb55fe49f86d8367fc555f13e0204ca4a5ca288d
                 </Row>
                 <span style={{ fontFamily: FB, fontSize: 12, color: t.orange, fontWeight: 600 }}>See all →</span>
             </Row>
@@ -435,12 +574,17 @@ const CareerHome = ({ mode, onToggle, appliedCount = 0 }) => {
                     { h: "Anthropic raises $2B — AI talent demand surges across India", src: "TechCrunch", time: "2h" },
                     { h: "Top 10 skills hiring managers want in 2025 interns",          src: "Forbes",     time: "5h" },
                 ].map((n, i) => (
+<<<<<<< HEAD
                     <Row key={i} g={12} ai="center" sx={{ padding: "12px 14px", background: t.s2, borderRadius: 16, border: `1px solid ${t.border}`, cursor: "pointer" }}>
                         <div style={{ width: 46, height: 46, borderRadius: 13, background: t.s3, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+=======
+                    <div key={i} style={{ margin: "0 22px 10px", display: "flex", gap: 12, padding: "14px", background: t.s1, borderRadius: 20, border: "none", boxShadow: t.shadow, alignItems: "center" }}>
+                        <div style={{ width: 46, height: 46, borderRadius: 13, background: t.s2, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+>>>>>>> bb55fe49f86d8367fc555f13e0204ca4a5ca288d
                             <Svg d={IC.zap} s={20} c={t.orange} />
                         </div>
                         <Col g={4} sx={{ flex: 1 }}>
-                            <span style={{ fontFamily: FB, fontWeight: 600, fontSize: 13, color: t.t1, lineHeight: 1.4 }}>{n.h}</span>
+                            <span style={{ fontFamily: FB, fontWeight: 700, fontSize: 13, color: t.t1, lineHeight: 1.4 }}>{n.h}</span>
                             <Row g={8}>
                                 <span style={{ fontFamily: FB, fontSize: 10, fontWeight: 700, color: t.orange, background: t.orangeLo, padding: "2px 7px", borderRadius: 100 }}>{n.src}</span>
                                 <span style={{ fontFamily: FB, fontSize: 10, color: t.t3 }}>{n.time} ago</span>

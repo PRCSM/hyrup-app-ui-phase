@@ -14,7 +14,7 @@ import { Row, Col } from '../../helpers.jsx';
    • Rich details: company info, role, description, skills,
      experience, job type, mode, salary, and more
 ═══════════════════════════════════════════════════════════════════════ */
-const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction }) => {
+const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction, addXP }) => {
     const t = T.c;
 
     const CARDS_BUILTIN = [
@@ -79,6 +79,12 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
     const [skipped, setSkipped] = useState([]);
     const [lastAction, setLastAction] = useState(null);
 
+    /* ── V2.1: Super-save + Skip reason ── */
+    const [superSavesUsed, setSuperSavesUsed] = useState(0);
+    const [dragY, setDragY] = useState(0);
+    const [showSkipReason, setShowSkipReason] = useState(false);
+    const [skipTarget, setSkipTarget] = useState(null);
+
     // Swipe detection refs
     const startX = useRef(0);
     const startY = useRef(0);
@@ -93,11 +99,20 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
         setTimeout(() => {
             setStamp(null);
             if (onAction) { onAction(action, idx); onClose(); return; }
-            if (action === "apply") setApplied(a => [...a, idx]);
-            else if (action === "skip") setSkipped(s => [...s, idx]);
+            if (action === "apply") { setApplied(a => [...a, idx]); addXP?.(25, "Job Applied"); }
+            else if (action === "skip") {
+                setSkipped(s => [...s, idx]);
+                // Show skip reason chips (V2.1)
+                setShowSkipReason(true);
+                setSkipTarget(idx);
+                return; // Don't advance yet — wait for reason selection or dismiss
+            } else if (action === "supersave") {
+                setSuperSavesUsed(s => s + 1);
+            }
             setLastAction({ action, idx });
             setIdx(i => i + 1);
             setDrag(0);
+            setDragY(0);
         }, 350);
     };
 
@@ -127,8 +142,11 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
         if (locked.current === "horizontal") {
             e.preventDefault();
             setDrag(dx);
+        } else if (locked.current === "vertical" && dy < 0) {
+            // Upward drag for super-save
+            e.preventDefault();
+            setDragY(dy);
         }
-        // vertical = let browser handle scroll
     };
     const onPointerUp = () => {
         dragging.current = false;
@@ -136,6 +154,11 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
             if (drag > 100) triggerAction("apply");
             else if (drag < -100) triggerAction("skip");
             else setDrag(0);
+        } else if (locked.current === "vertical" && dragY < -80 && superSavesUsed < 3) {
+            // Super-save gesture!
+            triggerAction("supersave");
+        } else {
+            setDragY(0);
         }
         locked.current = null;
     };
@@ -206,7 +229,11 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
 
             {/* Swipe hint */}
             <div style={{ textAlign: "center", marginBottom: 8, flexShrink: 0 }}>
-                <span style={{ fontFamily: FB, fontSize: 11, color: t.t3 }}>← swipe left to skip  ·  swipe right to apply →</span>
+                <span style={{ fontFamily: FB, fontSize: 11, color: t.t3 }}>← swipe left to skip  ·  swipe right to apply  ·  swipe up to super-save ↑</span>
+                {/* Super-save counter */}
+                <div style={{ marginTop: 4 }}>
+                    <span style={{ fontFamily: FB, fontSize: 10, fontWeight: 700, color: T.c.gold }}>{3 - superSavesUsed}/3 super saves remaining</span>
+                </div>
             </div>
 
             {/* Card area — takes remaining height */}
@@ -243,9 +270,18 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
                     {/* STAMP */}
                     {stamp && (
                         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20, pointerEvents: "none" }}>
-                            <div style={{ padding: "12px 28px", borderRadius: 16, border: `4px solid ${stamp === "apply" ? T.c.green : T.c.red}`, transform: `rotate(${stamp === "skip" ? 10 : -10}deg)` }}>
-                                <span style={{ fontFamily: FD, fontWeight: 900, fontSize: 28, color: stamp === "apply" ? T.c.green : T.c.red, letterSpacing: 2 }}>
-                                    {stamp === "apply" ? "APPLYING ✓" : "SKIPPING ✗"}
+                            <div style={{
+                                padding: "12px 28px", borderRadius: 16,
+                                border: `4px solid ${stamp === "apply" ? T.c.green : stamp === "supersave" ? T.c.gold : T.c.red}`,
+                                transform: `rotate(${stamp === "skip" ? 10 : -10}deg)`,
+                                boxShadow: stamp === "supersave" ? `0 0 40px ${T.c.gold}60` : "none",
+                            }}>
+                                <span style={{
+                                    fontFamily: FD, fontWeight: 900, fontSize: stamp === "supersave" ? 22 : 28,
+                                    color: stamp === "apply" ? T.c.green : stamp === "supersave" ? T.c.gold : T.c.red,
+                                    letterSpacing: 2,
+                                }}>
+                                    {stamp === "apply" ? "APPLYING ✓" : stamp === "supersave" ? "SUPER SAVED ★" : "SKIPPING ✗"}
                                 </span>
                             </div>
                         </div>
@@ -389,6 +425,42 @@ const SwipeScreen = ({ onClose, cards: externalCards, initialIndex = 0, onAction
                     </div>
                 )}
             </div>
+
+            {/* === SKIP REASON CHIPS (V2.1) === */}
+            {showSkipReason && (
+                <div style={{
+                    position: "absolute", inset: 0, zIndex: 110,
+                    background: "rgba(0,0,0,0.85)", backdropFilter: "blur(4px)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    padding: 24,
+                }}>
+                    <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 18, color: "#fff", marginBottom: 6 }}>Why skip?</span>
+                    <span style={{ fontFamily: FB, fontSize: 12, color: "rgba(255,255,255,0.4)", marginBottom: 20 }}>Optional — helps improve your matches</span>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 24 }}>
+                        {["Not my domain", "Salary too low", "Bad location", "Already applied", "Other"].map(reason => (
+                            <button key={reason} onClick={() => {
+                                setShowSkipReason(false);
+                                setLastAction({ action: "skip", idx: skipTarget });
+                                setIdx(i => i + 1);
+                                setDrag(0); setDragY(0);
+                            }} style={{
+                                padding: "10px 18px", borderRadius: 100,
+                                background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)",
+                                color: "#fff", fontFamily: FB, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                            }}>{reason}</button>
+                        ))}
+                    </div>
+                    <button onClick={() => {
+                        setShowSkipReason(false);
+                        setLastAction({ action: "skip", idx: skipTarget });
+                        setIdx(i => i + 1);
+                        setDrag(0); setDragY(0);
+                    }} style={{
+                        background: "none", border: "none", color: "rgba(255,255,255,0.4)",
+                        fontFamily: FB, fontSize: 13, cursor: "pointer",
+                    }}>Skip without feedback</button>
+                </div>
+            )}
         </div>
     );
 };

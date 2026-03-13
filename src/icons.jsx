@@ -37,6 +37,23 @@ export const IC = {
     fire: "M12 2c0 0-5 5.5-5 9a5 5 0 0 0 10 0c0-3.5-5-9-5-9zM9.5 14a2.5 2.5 0 0 0 5 0c0-2-2.5-5-2.5-5S9.5 12 9.5 14z",
     undo: "M9 14L4 9l5-5M4 9h11a4 4 0 0 1 0 8h-1",
     clock: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2",
+    /* ── V2.1 additions ── */
+    comment: "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z",
+    repost: "M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3",
+    flame: "M12 2c0 0-5 5.5-5 9a5 5 0 0 0 10 0c0-3.5-5-9-5-9zM9.5 14a2.5 2.5 0 0 0 5 0c0-2-2.5-5-2.5-5S9.5 12 9.5 14z",
+    target: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+    mapPin: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z",
+    locate: "M22 11h-4a8 8 0 0 0-7-7V0M2 13h4a8 8 0 0 0 7 7v4M13 2v4a8 8 0 0 0 7 7h4M11 22v-4a8 8 0 0 0-7-7H0",
+    trophy: "M6 9H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3M18 9h3a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-3M6 4v5a6 6 0 0 0 12 0V4M9 20h6M12 15v5",
+    pencil: "M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z",
+    arrowLeft: "M19 12H5M12 19l-7-7 7-7",
+    coffee: "M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3",
+    link: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71",
+    video: "M23 7l-7 5 7 5V7zM14 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z",
+    copy: "M20 9h-9a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zM5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1",
+    minus: "M5 12h14",
+    chevR: "M9 18l6-6-6-6",
+    cam: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2zM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z",
 };
 
 /* ── Svg component ── */
@@ -45,3 +62,43 @@ export const Svg = ({ d, s = 20, c = "#fff", w = 1.85, fill = "none" }) => (
         <path d={d} />
     </svg>
 );
+
+/* ── Hyru Mascot — inline SVG character ── */
+export const HyruMascot = ({ variant = 'idle', size = 80 }) => {
+    const scale = size / 80;
+    return (
+        <div style={{ display: 'inline-block' }} className={variant === 'celebrating' ? 'hyru-celebrate' : 'hyru-idle'}>
+            <svg width={80 * scale} height={100 * scale} viewBox="0 0 80 100">
+                {/* Body — rounded rect */}
+                <rect x="20" y="45" width="40" height="45" rx="14" fill="#FF5722" />
+                {/* Head — circle */}
+                <circle cx="40" cy="32" r="22" fill="#FF7A1A" />
+                {/* Eyes */}
+                <circle cx="33" cy="30" r="3.5" fill="white" />
+                <circle cx="47" cy="30" r="3.5" fill="white" />
+                <circle cx="34" cy="31" r="1.5" fill="#111" />
+                <circle cx="48" cy="31" r="1.5" fill="#111" />
+                {/* Smile */}
+                <path d="M33 38 Q40 44 47 38" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                {/* Arms */}
+                {variant === 'pointing' && <line x1="60" y1="58" x2="80" y2="48" stroke="#FF7A1A" strokeWidth="5" strokeLinecap="round" />}
+                {variant === 'celebrating' && <>
+                    <line x1="20" y1="55" x2="5" y2="38" stroke="#FF7A1A" strokeWidth="5" strokeLinecap="round" />
+                    <line x1="60" y1="55" x2="75" y2="38" stroke="#FF7A1A" strokeWidth="5" strokeLinecap="round" />
+                </>}
+                {variant === 'idle' && <>
+                    <line x1="20" y1="58" x2="8" y2="68" stroke="#FF7A1A" strokeWidth="5" strokeLinecap="round" />
+                    <line x1="60" y1="58" x2="72" y2="68" stroke="#FF7A1A" strokeWidth="5" strokeLinecap="round" />
+                </>}
+            </svg>
+        </div>
+    );
+};
+
+/* ── Mascot CSS animations — inject via style tag ── */
+export const MASCOT_STYLES = `
+@keyframes hyru-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+.hyru-idle { animation: hyru-bob 2s ease-in-out infinite; }
+@keyframes hyru-celebrate { 0%,100% { transform: rotate(-8deg) } 50% { transform: rotate(8deg) } }
+.hyru-celebrate { animation: hyru-celebrate 0.4s ease-in-out infinite; }
+`;

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { FONT_IMPORT, FD, FB, T } from './tokens.js';
-import { IC } from './icons.jsx';
+import { IC, MASCOT_STYLES } from './icons.jsx';
+import XPToast from './components/XPToast.jsx';
 import { ALL_JOBS } from './data.js';
 import Phone from './components/Phone.jsx';
 import BottomNav from './components/BottomNav.jsx';
+import Onboarding from './screens/Onboarding.jsx';
 
 /* ── Career Screens ── */
 import CareerHome from './screens/career/CareerHome.jsx';
@@ -31,7 +33,10 @@ const HACKATHONS = [
    ROOT APP
 ═══════════════════════════════════════════════════════════════════════ */
 export default function HYRUPApp() {
-    const [mode, setMode] = useState("career");
+    /* ── Onboarding state ── */
+    const [onboarded, setOnboarded] = useState(false);
+
+    const [mode, setMode] = useState("social");
     const [cTab, setCTab] = useState("home");
     const [sTab, setSTab] = useState("home");
     const [fading, setFading] = useState(false);
@@ -44,6 +49,17 @@ export default function HYRUPApp() {
     const [rejectedJobs, setRejectedJobs] = useState([]);
     const [bookmarkedIds, setBookmarkedIds] = useState([]);
     const [hackathons] = useState([...HACKATHONS]);
+
+    /* ── XP System (V2.1) ── */
+    const [xp, setXp] = useState(1240);
+    const [streak, setStreak] = useState(5);
+    const [xpToast, setXpToast] = useState(null);
+
+    const addXP = (amount, label) => {
+        setXp(p => p + amount);
+        setXpToast({ amount, label });
+        setTimeout(() => setXpToast(null), 2500);
+    };
 
     /* ── moveJob(jobId, destination) ── */
     const moveJob = (jobId, destination) => {
@@ -78,7 +94,7 @@ export default function HYRUPApp() {
     };
 
     const isC = mode === "career";
-    const p = { mode, onToggle: toggleMode };
+    const p = { mode, onToggle: toggleMode, xp, streak, addXP };
     const t = isC ? T.c : T.s;
 
     /* ── Nav items ── */
@@ -106,9 +122,10 @@ export default function HYRUPApp() {
     };
 
     return (
-        <div style={{ minHeight: "100vh", background: "#030303", display: "flex", flexDirection: "column", alignItems: "center", padding: "28px 0 48px" }}>
+        <div style={{ minHeight: "100vh", background: "#EAEAE8", display: "flex", flexDirection: "column", alignItems: "center", padding: "28px 0 48px" }}>
             <style>{`
         ${FONT_IMPORT}
+        ${MASCOT_STYLES}
         * { box-sizing: border-box; margin: 0; padding: 0; }
         ::-webkit-scrollbar { width: 0; height: 0; }
         button { font-family: 'DM Sans', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -116,37 +133,42 @@ export default function HYRUPApp() {
 
             {/* Wordmark */}
             <div style={{ textAlign: "center", marginBottom: 18 }}>
-                <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 32, letterSpacing: -1, color: "#fff" }}>
-                    HY<span style={{ color: "#FF7A1A" }}>R</span>UP
+                <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 32, letterSpacing: -1, color: "#111111" }}>
+                    HY<span style={{ color: t.orange }}>R</span>UP
                 </span>
-                <div style={{ fontFamily: FB, fontSize: 11, color: "#2A2A2A", marginTop: 3 }}>MVP Phase 2 · Career & Social · Mobile UI System</div>
+                <div style={{ fontFamily: FB, fontSize: 11, color: "#777", marginTop: 3 }}>MVP Phase 3 · Mozi-Inspired Minimal System</div>
             </div>
 
             {/* Mode label */}
             <div style={{ marginBottom: 16, display: "flex", gap: 8, alignItems: "center" }}>
-                <div style={{ width: 6, height: 6, borderRadius: 3, background: t.orange, boxShadow: `0 0 8px ${t.orange}` }} />
-                <span style={{ fontFamily: FB, fontSize: 11, fontWeight: 700, color: t.orange }}>
-                    {isC ? "Career Mode — #0F0F0F dark, orange accent" : "Social Mode — #F8F7F5 warm light, vivid orange"}
+                <div style={{ width: 6, height: 6, borderRadius: 3, background: t.orange, boxShadow: `0 0 4px ${t.orangeDim}` }} />
+                <span style={{ fontFamily: FB, fontSize: 12, fontWeight: 700, color: t.orange }}>
+                    {isC ? "Career Mode" : "Social Mode"}
                 </span>
-                <div style={{ width: 6, height: 6, borderRadius: 3, background: t.orange, boxShadow: `0 0 8px ${t.orange}` }} />
+                <div style={{ width: 6, height: 6, borderRadius: 3, background: t.orange, boxShadow: `0 0 4px ${t.orangeDim}` }} />
             </div>
 
             <Phone mode={mode}>
-                <div style={{ display: "flex", flexDirection: "column", height: "100%", opacity: fading ? 0 : 1, transition: "opacity 0.16s ease" }}>
-                    <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }}>
-                        {renderScreen()}
+                {!onboarded ? (
+                    <Onboarding onComplete={() => { setOnboarded(true); addXP(50, 'Welcome!'); }} />
+                ) : (
+                    <div style={{ display: "flex", flexDirection: "column", height: "100%", opacity: fading ? 0 : 1, transition: "opacity 0.16s ease" }}>
+                        <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden", position: "relative" }}>
+                            {renderScreen()}
+                        </div>
+                        {xpToast && <XPToast amount={xpToast.amount} label={xpToast.label} />}
+                        <BottomNav mode={mode} active={isC ? cTab : sTab} onSelect={isC ? setCTab : setSTab} items={isC ? careerNavItems : socialNavItems} />
                     </div>
-                    <BottomNav mode={mode} active={isC ? cTab : sTab} onSelect={isC ? setCTab : setSTab} items={isC ? careerNavItems : socialNavItems} />
-                </div>
+                )}
             </Phone>
 
             {/* Design system legend */}
             <div style={{ marginTop: 24, maxWidth: 393, padding: "0 20px", textAlign: "center" }}>
-                <p style={{ fontFamily: FB, fontSize: 10, color: "#222", lineHeight: 1.9 }}>
-                    <span style={{ color: "#444" }}>TYPOGRAPHY</span> — Bricolage Grotesque (display) + DM Sans (body)<br />
-                    <span style={{ color: "#444" }}>CAREER</span> — <span style={{ color: "#FF7A1A" }}>#FF7A1A</span> · <span style={{ color: "#555" }}>#0F0F0F bg · #161616 card · r20</span><br />
-                    <span style={{ color: "#444" }}>SOCIAL</span> — <span style={{ color: "#FF5722" }}>#FF5722</span> · <span style={{ color: "#888" }}>#F8F7F5 bg · #FFFFFF card · r22</span><br />
-                    <span style={{ color: "#444" }}>NAV</span> — dot indicator above icon · toggle in header · crossfade on switch
+                <p style={{ fontFamily: FB, fontSize: 10, color: "#777", lineHeight: 1.9 }}>
+                    <span style={{ color: "#A3A3A3" }}>TYPOGRAPHY</span> — Bricolage Grotesque (display) + DM Sans (body)<br />
+                    <span style={{ color: "#A3A3A3" }}>SYSTEM</span> — Off-white backgrounds · Pure white floating cards · Soft shadows<br />
+                    <span style={{ color: "#A3A3A3" }}>ACCENTS</span> — Career: <span style={{ color: "#E86A33" }}>#E86A33</span> · Social: <span style={{ color: "#FA664A" }}>#FA664A</span><br />
+                    <span style={{ color: "#A3A3A3" }}>NAV</span> — Mozi-style pill indicator · crossfade on switch
                 </p>
             </div>
         </div>

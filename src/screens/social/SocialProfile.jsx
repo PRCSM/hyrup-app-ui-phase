@@ -15,7 +15,7 @@ const SocialProfile = ({ mode, onToggle }) => {
                     <ModeToggle mode={mode} onToggle={onToggle} />
                 </div>
                 <div style={{ position: "absolute", bottom: -32, left: "50%", transform: "translateX(-50%)" }}>
-                    <div style={{ width: 72, height: 72, borderRadius: "50%", background: t.s1, border: `3px solid ${t.bg}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
+                    <div style={{ width: 72, height: 72, borderRadius: "50%", background: t.s1, border: `3px solid ${t.bg}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: t.shadow }}>
                         <span style={{ fontFamily: FD, fontWeight: 900, fontSize: 28, color: t.orange }}>R</span>
                     </div>
                 </div>
@@ -45,7 +45,7 @@ const SocialProfile = ({ mode, onToggle }) => {
                 {/* Action row */}
                 <Row g={10} sx={{ marginBottom: 22 }}>
                     <button style={{ flex: 1, height: 44, borderRadius: 14, background: t.orange, border: "none", color: "#fff", fontFamily: FB, fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: `0 4px 16px ${t.orangeMid}` }}>✦ AI Resume</button>
-                    <button style={{ flex: 1, height: 44, borderRadius: 14, background: t.s1, border: `1.5px solid ${t.border}`, color: t.t1, fontFamily: FB, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>Edit Profile</button>
+                    <button style={{ flex: 1, height: 44, borderRadius: 14, background: t.s1, border: `1.5px solid ${t.border}`, color: t.t1, fontFamily: FB, fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: t.shadow }}>Edit Profile</button>
                 </Row>
 
                 {/* Tab icons */}

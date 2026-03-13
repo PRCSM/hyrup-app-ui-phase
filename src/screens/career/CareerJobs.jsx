@@ -7,6 +7,7 @@ import ModeToggle from '../../components/ModeToggle.jsx';
 import SwipeScreen from './SwipeScreen.jsx';
 import FilterPanel from './FilterPanel.jsx';
 import AcceptedRejectedJobModal from './AcceptedRejectedJobModal.jsx';
+import TeamFormation from '../../components/TeamFormation.jsx';
 
 /* ═══════════════════════════════════════════════════════════════════
    ANIMATION CONSTANTS — card stack layer switching
@@ -30,6 +31,7 @@ const CareerJobs = ({
     const [actionFlash, setActionFlash] = useState(null);
     const [modalJob, setModalJob] = useState(null);
     const [modalStatus, setModalStatus] = useState(null);
+    const [teamFormationHack, setTeamFormationHack] = useState(null);
 
     /* ═══════════════════════════════════════════════════════════════════
        HACKATHON TOGGLE — boolean + animation phase
@@ -237,8 +239,8 @@ const CareerJobs = ({
     /* ── Compact card for accepted/rejected sections ── */
     const MiniCard = ({ j, accent, sectionKey }) => (
         <div onClick={() => { setModalJob(j); setModalStatus(sectionKey); }} style={{ cursor: "pointer" }}>
-            <Row g={10} ai="center" sx={{ padding: "10px 14px", background: t.s2, borderRadius: 14, border: `1px solid ${t.border}`, marginBottom: 6 }}>
-                <div style={{ width: 38, height: 38, borderRadius: 12, background: t.s3, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Row g={10} ai="center" sx={{ padding: "12px 16px", background: t.s1, borderRadius: 16, border: "none", boxShadow: t.shadow, marginBottom: 8 }}>
+                <div style={{ width: 38, height: 38, borderRadius: 12, background: t.s2, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 15, color: accent }}>{j.ch}</span>
                 </div>
                 <Col g={1} sx={{ flex: 1, minWidth: 0 }}>
@@ -267,9 +269,10 @@ const CareerJobs = ({
                     onLostPointerCapture: e => onPtrCancel(e, i),
                 } : { onClick: () => setSelectedJobId(j.id) })}
                 style={{
-                    background: t.s2, borderRadius: t.r, padding: 16, position: "relative", overflow: "hidden",
-                    border: `1px solid ${flash === "apply" ? T.c.green + "66" : flash === "skip" ? T.c.red + "66" : t.border}`,
-                    marginBottom: 10,
+                    background: t.s1, borderRadius: 24, padding: 16, position: "relative", overflow: "hidden",
+                    border: flash === "apply" ? `1.5px solid ${T.c.green}66` : flash === "skip" ? `1.5px solid ${T.c.red}66` : "none",
+                    boxShadow: t.shadow,
+                    marginBottom: 12,
                     transform: `translateX(${dx}px) scale(${bFlash ? 0.96 : 1})`,
                     transition: isActive ? "none" : "transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s",
                     cursor: isActive ? "grabbing" : "pointer", userSelect: "none", touchAction: "pan-y",
@@ -319,8 +322,8 @@ const CareerJobs = ({
     /* ── Hackathon Card — display-only ── */
     const HackCard = ({ h }) => (
         <div style={{
-            background: h.grad, borderRadius: t.r, padding: 18, marginBottom: 12,
-            border: `1px solid ${h.col}25`, position: "relative", overflow: "hidden",
+            background: t.s1, borderRadius: 24, padding: 18, marginBottom: 14,
+            border: "none", boxShadow: t.shadow, position: "relative", overflow: "hidden",
         }}>
             <div style={{ position: "absolute", top: -20, right: -20, width: 120, height: 120, borderRadius: "50%", background: `${h.col}12`, filter: "blur(40px)", pointerEvents: "none" }} />
             <Row g={12} ai="flex-start" sx={{ marginBottom: 12, position: "relative", zIndex: 1 }}>
@@ -328,8 +331,8 @@ const CareerJobs = ({
                     <span style={{ fontFamily: FD, fontWeight: 900, fontSize: 22, color: h.col }}>{h.ch}</span>
                 </div>
                 <Col g={3} sx={{ flex: 1 }}>
-                    <span style={{ fontFamily: FB, fontWeight: 800, fontSize: 16, color: "#fff" }}>{h.title}</span>
-                    <span style={{ fontFamily: FB, fontSize: 12, color: "rgba(255,255,255,0.5)" }}>{h.org}</span>
+                    <span style={{ fontFamily: FB, fontWeight: 800, fontSize: 16, color: t.t1 }}>{h.title}</span>
+                    <span style={{ fontFamily: FB, fontSize: 12, color: t.t2 }}>{h.org}</span>
                 </Col>
             </Row>
             <Row g={8} sx={{ marginBottom: 12, position: "relative", zIndex: 1 }}>
@@ -340,13 +343,19 @@ const CareerJobs = ({
             <Row g={6} sx={{ flexWrap: "wrap", marginBottom: 14, position: "relative", zIndex: 1 }}>
                 {h.tags.map(tg => <span key={tg} style={{ fontFamily: FB, fontSize: 11, fontWeight: 600, color: h.col, background: `${h.col}12`, border: `1px solid ${h.col}22`, padding: "3px 10px", borderRadius: 100 }}>{tg}</span>)}
             </Row>
-            <button style={{
-                width: "100%", height: 40, borderRadius: 13,
-                background: h.col, border: "none", color: "#fff",
-                fontFamily: FB, fontSize: 13, fontWeight: 800, cursor: "pointer",
-                boxShadow: `0 4px 16px ${h.col}40`,
-                position: "relative", zIndex: 1,
-            }}>Register →</button>
+            <Row g={8} sx={{ position: "relative", zIndex: 1 }}>
+                <button onClick={() => setTeamFormationHack(h)} style={{
+                    flex: 1, height: 40, borderRadius: 13,
+                    background: "transparent", border: `1.5px solid ${h.col}`,
+                    color: h.col, fontFamily: FB, fontSize: 13, fontWeight: 800, cursor: "pointer",
+                }}>Find Team</button>
+                <button style={{
+                    flex: 1, height: 40, borderRadius: 13,
+                    background: h.col, border: "none", color: "#fff",
+                    fontFamily: FB, fontSize: 13, fontWeight: 800, cursor: "pointer",
+                    boxShadow: `0 4px 16px ${h.col}40`,
+                }}>Register →</button>
+            </Row>
         </div>
     );
 
@@ -365,33 +374,33 @@ const CareerJobs = ({
                         <ModeToggle mode={mode} onToggle={onToggle} />
                     </Row>
                     {/* Search */}
-                    <div style={{ display: "flex", gap: 10, alignItems: "center", background: t.s2, borderRadius: 14, padding: "11px 15px", marginBottom: 14, border: `1px solid ${t.border}` }}>
-                        <Svg d={IC.search} s={15} c={t.t2} />
+                    <div style={{ display: "flex", gap: 10, alignItems: "center", background: t.s1, borderRadius: 18, padding: "14px 16px", marginBottom: 14, border: "none", boxShadow: t.shadow }}>
+                        <Svg d={IC.search} s={16} c={t.t2} />
                         <span style={{ fontFamily: FB, fontSize: 13, color: t.t3 }}>Search roles, companies, skills...</span>
                     </div>
                     {/* Action bar: Filters + Saved + Toggle */}
                     <Row g={8}>
                         <button onClick={() => setShowFilters(true)} style={{
-                            height: 36, padding: "0 14px", borderRadius: 100, display: "flex", alignItems: "center", gap: 6, cursor: "pointer",
-                            background: activeFilterCount > 0 ? t.orangeLo : t.s2, border: `1px solid ${activeFilterCount > 0 ? t.orange + "44" : t.border}`,
+                            height: 38, padding: "0 16px", borderRadius: 100, display: "flex", alignItems: "center", gap: 6, cursor: "pointer",
+                            background: activeFilterCount > 0 ? t.orangeLo : t.s1, border: "none", boxShadow: t.shadow,
                         }}>
-                            <Svg d={IC.menu} s={13} c={activeFilterCount > 0 ? t.orange : t.t2} />
+                            <Svg d={IC.menu} s={14} c={activeFilterCount > 0 ? t.orange : t.t2} />
                             <span style={{ fontFamily: FB, fontSize: 12, fontWeight: 700, color: activeFilterCount > 0 ? t.orange : t.t2 }}>Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}</span>
                         </button>
                         {!isHackathonView && (
                             <button onClick={() => { setShowSaved(s => !s); }} style={{
-                                height: 36, padding: "0 14px", borderRadius: 100, display: "flex", alignItems: "center", gap: 5, cursor: "pointer",
-                                background: showSaved ? t.orangeLo : t.s2, border: `1px solid ${showSaved ? t.orange + "44" : t.border}`,
+                                height: 38, padding: "0 16px", borderRadius: 100, display: "flex", alignItems: "center", gap: 5, cursor: "pointer",
+                                background: showSaved ? t.orangeLo : t.s1, border: "none", boxShadow: t.shadow,
                             }}>
-                                <Svg d={IC.bmark} s={13} c={showSaved ? t.orange : t.t2} w={2} fill={showSaved ? t.orange : "none"} />
+                                <Svg d={IC.bmark} s={14} c={showSaved ? t.orange : t.t2} w={2} fill={showSaved ? t.orange : "none"} />
                                 <span style={{ fontFamily: FB, fontSize: 12, fontWeight: 700, color: showSaved ? t.orange : t.t2 }}>Saved ({savedJobs.length})</span>
                             </button>
                         )}
                         {/* ── TOGGLE: Hackathon ↔ Jobs ── */}
                         <button onClick={handleToggleView} disabled={isAnimating} style={{
-                            height: 36, padding: "0 14px", borderRadius: 100, display: "flex", alignItems: "center", gap: 5, cursor: isAnimating ? "default" : "pointer",
-                            background: isHackathonView ? "rgba(34,197,94,0.12)" : t.s2,
-                            border: `1px solid ${isHackathonView ? T.c.green + "44" : t.border}`,
+                            height: 38, padding: "0 16px", borderRadius: 100, display: "flex", alignItems: "center", gap: 5, cursor: isAnimating ? "default" : "pointer",
+                            background: isHackathonView ? "rgba(34,197,94,0.12)" : t.s1,
+                            border: "none", boxShadow: t.shadow,
                             opacity: isAnimating ? 0.6 : 1, transition: "opacity 0.2s",
                         }}>
                             <Svg d={IC.award} s={13} c={isHackathonView ? T.c.green : t.t2} />
@@ -469,6 +478,7 @@ const CareerJobs = ({
 
             {showFilters && <FilterPanel filters={filters} setFilters={setFilters} onClose={() => setShowFilters(false)} />}
             {modalJob && <AcceptedRejectedJobModal job={modalJob} status={modalStatus} onClose={() => { setModalJob(null); setModalStatus(null); }} />}
+            {teamFormationHack && <TeamFormation isOpen={true} onClose={() => setTeamFormationHack(null)} hackathon={teamFormationHack} mode={mode} />}
         </>
     );
 };
